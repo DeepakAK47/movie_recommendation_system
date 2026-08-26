@@ -5,16 +5,20 @@ import numpy as np
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
+import os
+from pathlib import Path
 
-TMDB_API_KEY = "207d8ab54f82c65b4af66d3a55456a44"
+TMDB_API_KEY = os.environ.get("TMDB_API_KEY", "")
 TMDB_FALLBACK_POSTER = "https://via.placeholder.com/500x750?text=Poster+Not+Available"
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 # Loading save modules
 @st.cache_resource
 def load_model():
-    movies = pickle.load(open('../models/movies.pkl', 'rb'))
-    similarity = pickle.load(open('../models/similarity_matrix.pkl', 'rb'))
-    movie_indices = pickle.load(open('../models/movie_indices.pkl', 'rb'))
+    models_dir = PROJECT_ROOT / "models"
+    movies = pickle.load((models_dir / "movies.pkl").open("rb"))
+    similarity = pickle.load((models_dir / "similarity_matrix.pkl").open("rb"))
+    movie_indices = pickle.load((models_dir / "movie_indices.pkl").open("rb"))
     return movies, similarity, movie_indices
 
 movies, similarity, movie_indices = load_model()
