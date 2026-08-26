@@ -15,4 +15,3 @@ movie_recommendation_project/
 │   └── similarity_matrix.pkl
 ├── requirements.txt
 └── README.md
-
